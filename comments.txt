@@ -1,3 +1,28 @@
+When I use the console to launch an instance, I get my IP as 192.94.40.70/32
+
+
+VPC:
+  # Do I need any of these (from the default PVC)
+  # VPC ID: vpc-c00843ba: No, automatically assigned
+  # Tenancy: default: Yes, done
+  # State: available: No, automatic
+  # Default VPC: Yes: No, automatic
+  # IPv4 CIDR: 172.31.0.0/16: Yes, done
+  # Classic link: Disabled: 
+  # IPv6 CIDR: -
+  # DNS resolution: Enabled
+  # Network ACL: acl-4208bb3f
+  # DNS hostnames: Enabled: ? 
+  # DHCP options set: dopt-52788d28: ? Gets set to same as default, which is probably OK
+  # ClassicLink DNS Support: Disabled: No, defaults to Disabled
+  # Route table: rtb-2669be58: ? One is generated, but doesn't have an Internet Gateay like the default does. Do I need one?
+  # Owner: 974041429741: No, automatic
+
+  # CIDR blocks
+  # 172.31.0.0/16: associated
+
+
+
 
 # https://www.terraform.io/docs/providers/aws/r/db_instance.html
 # resource "aws_db_instance" "mysql-rds-replication" {
@@ -53,3 +78,322 @@
 #   # such as 10.1.16.0/20 .
 #   cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 4, count.index+1)
 # }
+
+rds
+MySQL Community 5.7.22
+Free tier
+ID: mysql-rds-replication
+root/megasecretpassword
+db.t2.micro
+SSD
+20GB
+Autoscale
+1000GB
+Standby?
+example-vpc
+create new db subnet group?
+publicly accesssible: yes, for now
+VPC security group: allow_mysql
+AZ: No preference, for now
+Database port: 3306
+Password auth
+Additional:
+    Initial db name:
+    DB param group: default.mysql5.7
+    option group: defgault:mysql-5-7
+Enable backups
+Backup retention: 7 days
+Backup window: No preferenceCopy tags to snapshots
+Enable enhanced monitoring
+    Granularity: 60 secs
+    Monitoring role: default
+Log exports (to CloudWatch): general, audit, error, slow query
+Maintenance:
+    Allow minor upgrade: No
+    Window: No pref
+
+
+# Default-ish RDS Settings
+AWS
+ 
+Services
+  
+Resource Groups
+  
+ 
+Charles Pilon
+  
+N. Virginia
+  
+Support
+ 
+
+
+We listened to your feedback!
+Now, create a database with a single click using our pre-built configurations! Or choose your own configurations.
+
+Switch to your original interface.
+Share your feedback
+
+RDS
+Create database
+Create database
+Choose a database creation method Info
+
+Standard Create
+You set all of the configuration options, including ones for availability, security, backups, and maintenance.
+
+Easy Create
+Use recommended best-practice configurations. Some configuration options can be changed after the database is created.
+Engine options
+Engine typeInfo
+
+Amazon Aurora
+
+MySQL
+
+MariaDB
+
+PostgreSQL
+
+Oracle
+
+Microsoft SQL Server
+Edition
+
+MySQL Community
+VersionInfo
+Known Issues/Limitations
+Review the Known Issues/Limitations to learn about potential compatibility issues with specific database versions.
+Templates
+Choose a sample template to meet your use case.
+
+Production
+Use defaults for high availability and fast, consistent performance.
+
+Dev/Test
+This instance is intended for development use outside of a production environment.
+
+Free tier
+Use RDS Free Tier to develop new applications, test existing applications, or gain hands-on experience with Amazon RDS. Info
+Settings
+DB instance identifierInfo
+Type a name for your DB instance. The name must be unique cross all DB instances owned by your AWS account in the current AWS Region.
+database-1
+The DB instance identifier is case-insensitive, but is stored as all lowercase (as in "mydbinstance"). Constraints: 1 to 60 alphanumeric characters or hyphens (1 to 15 for SQL Server). First character must be a letter. Can't contain two consecutive hyphens. Can't end with a hyphen.
+Credentials Settings
+Master usernameInfo
+Type a login ID for the master user of your DB instance.
+admin
+1 to 16 alphanumeric characters. First character must be a letter
+
+Auto generate a password
+Amazon RDS can generate a password for you, or you can specify your own password
+Master passwordInfo
+••••••••
+Constraints: At least 8 printable ASCII characters. Can't contain any of the following: / (slash), "(double quote) and @ (at sign).
+Confirm passwordInfo
+••••••••
+DB instance size
+DB instance classInfo
+Choose a DB instance class that meets your processing power and memory requirements. The DB instance class options below are limited to those supported by the engine you selected above.
+
+Standard classes (includes m classes)
+
+Memory Optimized classes (includes r and x classes)
+
+Burstable classes (includes t classes)
+
+Include previous generation classes
+Storage
+Storage typeInfo
+Allocated storage
+20
+GiB
+(Minimum: 20 GiB, Maximum: 16384 GiB) Higher allocated storage may improve IOPS performance.
+Storage autoscalingInfo
+Provides dynamic scaling support for your database’s storage based on your application’s needs.
+
+Enable storage autoscaling
+Enabling this feature will allow the storage to increase once the specified threshold is exceeded.
+Maximum storage thresholdInfo
+Charges will apply when your database autoscales to the specified threshold
+1000
+GiB
+Minimum: 21 GiB, Maximum: 16384 GiB
+Availability & durability
+Multi-AZ deploymentInfo
+
+Create a standby instance (recommended for production usage)
+Creates a standby in a different Availability Zone (AZ) to provide data redundancy, eliminate I/O freezes, and minimize latency spikes during system backups.
+
+Do not create a standby instance
+Connectivity
+
+Virtual Private Cloud (VPC)Info
+VPC that defines the virtual networking environment for this DB instance.
+Only VPCs with a corresponding DB subnet group are listed.
+After a database is created, you can't change the VPC selection.
+Additional connectivity configuration
+Subnet groupInfo
+DB subnet group that defines which subnets and IP ranges the DB instance can use in the VPC you selected.
+Publicly accessibleInfo
+
+Yes
+Amazon EC2 instances and devices outside the VPC can connect to your database. Choose one or more VPC security groups that specify which EC2 instances and devices inside the VPC can connect to the database.
+
+No
+RDS will not assign a public IP address to the database. Only Amazon EC2 instances and devices inside the VPC can connect to your database.
+VPC security group
+Choose one or more RDS security groups to allow access to your database. Ensure that the security group rules allow incoming traffic from EC2 instances and devices outside your VPC. (Security groups are required for publicly accessible databases.)
+
+Choose existing
+Choose existing VPC security groups
+
+Create new
+Create new VPC security group
+Existing VPC security groups
+default
+
+Availability zoneInfo
+Database portInfo
+TCP/IP port the database will use for application connections.
+3306
+Database authentication
+Database authentication optionsInfo
+
+Password authentication
+Authenticates using database passwords.
+
+Password and IAM database authentication
+Authenticates using the database password and user credentials through AWS IAM users and roles.
+Additional configuration
+Database options, backup enabled, backtrack disabled, Enhanced Monitoring enabled, maintenance, CloudWatch Logs, delete protection disabled
+Database options
+Initial database nameInfo
+mydatabase
+If you do not specify a database name, Amazon RDS does not create a database.
+DB parameter groupInfo
+Option groupInfo
+Backup
+Creates a point in time snapshot of your database
+
+Enable automatic backups
+Enabling backups will automatically create backups of your database during a certain time window.
+Please note that automated backups are currently supported for InnoDB storage engine only. If you are using MyISAM, refer to details here.
+Backup retention periodInfo
+Choose the number of days that RDS should retain automatic backups for this instance.
+Backup windowInfo
+Select the period you want automated backups of the database to be created by Amazon RDS.
+
+Select window
+
+No preference
+
+Copy tags to snapshots
+Monitoring
+
+Enable Enhanced monitoring
+Enabling Enhanced monitoring metrics are useful when you want to see how different processes or threads use the CPU
+Granularity
+Monitoring Role
+Clicking "Create database" will authorize RDS to create the IAM role rds-monitoring-role
+Log exports
+Select the log types to publish to Amazon CloudWatch Logs
+
+Audit log
+
+Error log
+
+General log
+
+Slow query log
+IAM role
+The following service-linked role is used for publishing logs to CloudWatch Logs.
+RDS Service Linked Role
+Ensure that General, Slow Query, and Audit Logs are turned on. Error logs are enabled by default. Learn more
+Maintenance
+Auto minor version upgrade Info
+
+Enable auto minor version upgrade
+Enabling auto minor version upgrade will automatically upgrade to new minor versions as they are released. The automatic upgrades occur during the maintenance window for the database.
+Maintenance windowInfo
+Select the period you want pending modifications or maintenance applied to the database by Amazon RDS.
+
+Select window
+
+No preference
+Deletion protection
+
+Enable deletion protection
+Protects the database from being deleted accidentally. While this option is enabled, you can’t delete the database.
+Estimated monthly costs
+The Amazon RDS Free Tier is available to you for 12 months. Each calendar month, the free tier will allow you to use the Amazon RDS resources listed below for free:
+750 hrs of Amazon RDS in a Single-AZ db.t2.micro Instance.
+20 GB of General Purpose Storage (SSD).
+20 GB for automated backup storage and any user-initiated DB Snapshots.
+Learn more about AWS Free Tier.
+When you free usage expires or if your application use exceeds the free usage tiers, you simply pay standard, pay-as-you-go service rates as described in the Amazon RDS Pricing page.
+
+CancelCreate database
+Feedback
+English (US)
+Terms of UsePrivacy Policy© 2008 - 2019, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+
+# Output
+# aws_db_instance.database-1:
+resource "aws_db_instance" "database-1" {
+    address                               = "database-1.cfcptow3pnru.us-east-1.rds.amazonaws.com"
+    allocated_storage                     = 20
+    arn                                   = "arn:aws:rds:us-east-1:974041429741:db:database-1"
+    auto_minor_version_upgrade            = true
+    availability_zone                     = "us-east-1f"
+    backup_retention_period               = 7
+    backup_window                         = "04:20-04:50"
+    ca_cert_identifier                    = "rds-ca-2015"
+    copy_tags_to_snapshot                 = true
+    db_subnet_group_name                  = "default-vpc-c00843ba"
+    deletion_protection                   = false
+    enabled_cloudwatch_logs_exports       = [
+        "audit",
+        "error",
+        "general",
+        "slowquery",
+    ]
+    endpoint                              = "database-1.cfcptow3pnru.us-east-1.rds.amazonaws.com:3306"
+    engine                                = "mysql"
+    engine_version                        = "5.7.22"
+    hosted_zone_id                        = "Z2R2ITUGPM61AM"
+    iam_database_authentication_enabled   = false
+    id                                    = "database-1"
+    identifier                            = "database-1"
+    instance_class                        = "db.t2.micro"
+    iops                                  = 0
+    license_model                         = "general-public-license"
+    maintenance_window                    = "thu:06:58-thu:07:28"
+    max_allocated_storage                 = 1000
+    monitoring_interval                   = 60
+    monitoring_role_arn                   = "arn:aws:iam::974041429741:role/rds-monitoring-role"
+    multi_az                              = false
+    name                                  = "mydatabase"
+    option_group_name                     = "default:mysql-5-7"
+    parameter_group_name                  = "default.mysql5.7"
+    performance_insights_enabled          = false
+    performance_insights_retention_period = 0
+    port                                  = 3306
+    publicly_accessible                   = false
+    replicas                              = []
+    resource_id                           = "db-KDOOCC4ABAA32N3Q4T4T63H2QQ"
+    security_group_names                  = []
+    skip_final_snapshot                   = true
+    status                                = "available"
+    storage_encrypted                     = false
+    storage_type                          = "gp2"
+    tags                                  = {}
+    username                              = "admin"
+    vpc_security_group_ids                = [
+        "sg-014f7f51",
+    ]
+
+    timeouts {}
+}

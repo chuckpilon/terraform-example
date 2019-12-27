@@ -2,10 +2,11 @@
 
 1. Install terraform
 
+   See https://learn.hashicorp.com/terraform/getting-started/install
 
 1. Initialize
 
-	Initializes various local settings and data that will be used by subsequent commands.
+	Initialize various local settings and data that will be used by subsequent commands.
 
 	```
 	$ terraform init
@@ -30,4 +31,3 @@
 	```
 	$ terraform destroy
 	```
-

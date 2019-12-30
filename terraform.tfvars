@@ -1,9 +1,9 @@
 # Some IDEs will errorneously show errors in this file, such as "An argument named "aws_region" is not expected here."
 # See https://github.com/mauve/vscode-terraform/issues/218 and https://github.com/juliosueiras/terraform-lsp/issues/39.
 
-resource_prefix = "acme_proj1"
-client_name     = "Acme Inc."
-project_name    = "Project 1"
+resource_prefix  = "acme_app1"
+client_name      = "Acme Inc."
+application_name = "Application 1"
 
 aws_region         = "us-east-2"
 availability_zones = ["us-east-2a", "us-east-2b", "us-east-2c"]
@@ -11,14 +11,16 @@ aws_profile        = "default"
 
 vpc_cidr_block = "172.30.0.0/16"
 
-# TODO: Put these into an array.data
-# Ideally, compute from vpc_cidr_block.
-subnet1_cidr_block = "172.30.0.0/24"
-subnet2_cidr_block = "172.30.1.0/24"
-subnet3_cidr_block = "172.30.2.0/24"
-
-
-rds_instance_name   = "acme-proj1"
-rds_instance_class  = "db.t2.micro"
-rds_master_username = "root"
-rds_master_password = "megasecretpassword"
+rds_instance_name             = "acme-app1"
+rds_instance_class            = "db.t2.micro"
+rds_initial_allocated_storage = "20"
+rds_max_allocated_storage     = "1000"
+rds_master_username           = "root"
+rds_master_password           = "megasecretpassword"
+rds_ingress_cidr_blocks       = ["192.94.40.70/32"]
+rds_backup_window             = "01:00-02:00"
+rds_maintenance_window        = "wed:04:45-wed:05:15"
+rds_cloudwatch_logs_exports   = ["audit", "error", "general", "slowquery"]
+rds_engine_version            = "5.7.22"
+rds_option_group_name         = "default:mysql-5-7"
+rds_parameter_group_name      = "default.mysql5.7"

@@ -137,7 +137,7 @@ resource "aws_db_instance" "rds" {
   allocated_storage                     = var.rds_initial_allocated_storage
   auto_minor_version_upgrade            = false
   availability_zone                     = var.availability_zones[0]
-  backup_retention_period               = 0
+  backup_retention_period               = var.rds_backup_retention_period
   backup_window                         = var.rds_backup_window
   copy_tags_to_snapshot                 = true
   db_subnet_group_name                  = aws_db_subnet_group.db_subnet_group.id

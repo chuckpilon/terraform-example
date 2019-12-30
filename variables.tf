@@ -97,3 +97,7 @@ variable "rds_parameter_group_name" {
   type        = string
   description = "Name of the DB parameter group to associate."
 }
+variable "rds_backup_retention_period" {
+  type = string
+  description = "The days to retain backups for. Must be between 0 and 35. Must be greater than 0 if the database is used as a source for a Read Replica."
+}

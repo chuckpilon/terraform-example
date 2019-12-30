@@ -24,3 +24,4 @@ rds_cloudwatch_logs_exports   = ["audit", "error", "general", "slowquery"]
 rds_engine_version            = "5.7.22"
 rds_option_group_name         = "default:mysql-5-7"
 rds_parameter_group_name      = "default.mysql5.7"
+rds_backup_retention_period   = "7"

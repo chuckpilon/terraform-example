@@ -44,10 +44,10 @@ variable "subnet3_cidr_block" {
   description = "CIDR block for subnet 3"
 }
 
-# variable "availability_zones" {
-#   type        = list(string)
-#   description = "Availability zones"
-# }
+variable "availability_zones" {
+  type        = list(string)
+  description = "Availability zones"
+}
 
 variable "rds_instance_name" {
   type        = string

@@ -18,6 +18,7 @@ resource "aws_vpc" "vpc" {
     Name        = "${var.resource_prefix}_vpc"
     Client      = var.client_name
     Application = var.application_name
+    Environment = var.environment
   }
 }
 
@@ -40,6 +41,7 @@ resource "aws_subnet" "subnet" {
     Name        = "${var.resource_prefix}_subnet_${count.index}"
     Client      = var.client_name
     Application = var.application_name
+    Environment = var.environment
   }
 }
 
@@ -53,6 +55,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
     Name        = "${var.resource_prefix}_db_subnet_group"
     Client      = var.client_name
     Application = var.application_name
+    Environment = var.environment
   }
 }
 
@@ -78,6 +81,7 @@ resource "aws_default_route_table" "rt" {
     Name        = "${var.resource_prefix}_default_route_table"
     Client      = var.client_name
     Application = var.application_name
+    Environment = var.environment
   }
 }
 
@@ -89,6 +93,7 @@ resource "aws_internet_gateway" "gw" {
     Name        = "${var.resource_prefix}_gw"
     Client      = var.client_name
     Application = var.application_name
+    Environment = var.environment
   }
 }
 
@@ -130,49 +135,93 @@ resource "aws_security_group" "rds_sg" {
     Name        = "${var.resource_prefix}_rds_sg"
     Client      = var.client_name
     Application = var.application_name
+    Environment = var.environment
   }
 }
 
 resource "aws_db_instance" "rds" {
-  allocated_storage                     = var.rds_initial_allocated_storage
-  auto_minor_version_upgrade            = false
-  availability_zone                     = var.availability_zones[0]
-  backup_retention_period               = var.rds_backup_retention_period
-  backup_window                         = var.rds_backup_window
-  copy_tags_to_snapshot                 = true
-  db_subnet_group_name                  = aws_db_subnet_group.db_subnet_group.id
-  deletion_protection                   = false
-  enabled_cloudwatch_logs_exports       = var.rds_cloudwatch_logs_exports
+  # Engine Options
   engine                                = "mysql"
   engine_version                        = var.rds_engine_version
-  iam_database_authentication_enabled   = false
+
+  # Settings
   identifier                            = var.rds_instance_name
-  instance_class                        = var.rds_instance_class
-  iops                                  = 0
-  license_model                         = "general-public-license"
-  maintenance_window                    = var.rds_maintenance_window
-  max_allocated_storage                 = var.rds_max_allocated_storage
-  monitoring_interval                   = 0
-  multi_az                              = false
-  option_group_name                     = var.rds_option_group_name
+  username                              = var.rds_master_username
   password                              = var.rds_master_password
+
+  # Database instance size
+  instance_class                        = var.rds_instance_class
+
+  # Storage
+  storage_type                          = var.rds_storage_type
+  iops                                  = var.rds_iops
+  allocated_storage                     = var.rds_initial_allocated_storage
+  max_allocated_storage                 = var.rds_max_allocated_storage
+
+  # Availability & durability
+  multi_az                              = var.rds_multi_az
+
+  # Connectivity
+  vpc_security_group_ids                = [aws_security_group.rds_sg.id]
+  db_subnet_group_name                  = aws_db_subnet_group.db_subnet_group.id
+  publicly_accessible                   = var.rds_publicly_accessible
+  port                                  = 3306
+
+  # Database authentication
+  iam_database_authentication_enabled   = var.rds_iam_auth
+
+  # Database options
+  name                                  = var.rds_database_name
   parameter_group_name                  = var.rds_parameter_group_name
+  option_group_name                     = var.rds_option_group_name
+
+  # Backup
+  backup_window                         = var.rds_backup_window
+  backup_retention_period               = var.rds_backup_retention_period
+  copy_tags_to_snapshot                 = var.rds_copy_tags_to_snapshot
+  skip_final_snapshot                   = var.rds_skip_final_snapshot
+  
+  # Encryption
+  storage_encrypted                     = false
+
+  # Performance Insights
   performance_insights_enabled          = false
   performance_insights_retention_period = 0
-  port                                  = 3306
-  publicly_accessible                   = true
-  security_group_names                  = []
-  skip_final_snapshot                   = true
-  storage_encrypted                     = false
-  storage_type                          = "gp2"
-  username                              = var.rds_master_username
-  vpc_security_group_ids = [
-    aws_security_group.rds_sg.id
-  ]
+
+  # Monitoring
+  monitoring_interval                   = var.rds_monitoring_interval
+  enabled_cloudwatch_logs_exports       = var.rds_cloudwatch_logs_exports
+
+  # Maintenance
+  auto_minor_version_upgrade            = false
+  maintenance_window                    = var.rds_maintenance_window
+
+  # Deletion protection
+  deletion_protection                   = false
+
+  # TODO?
+  # apply_immediately
+  # availability_zone
+  # ca_cert_identifier
+  # domain
+  # domain_iam_role_name
+  # final_snapshot_identifier
+  # identifier_prefix
+  # kms_key_id 
+  # monitoring_role_arn 
+  # replicate_source_db
+  # snapshot_identifier 
+  # s3_import
+  # performance_insights_kms_key_id
+  # 
+  # 
+  # 
+  # 
 
   tags = {
     Name        = "${var.resource_prefix}_rds"
     Client      = var.client_name
     Application = var.application_name
+    Environment = var.environment
   }
 }

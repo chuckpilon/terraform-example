@@ -117,7 +117,7 @@ resource "aws_security_group" "rds_sg" {
   ]
   ingress = [
     {
-      cidr_blocks      = var.rds_ingress_cidr_blocks
+      cidr_blocks      = var.ingress_cidr_blocks
       description      = ""
       from_port        = 3306
       ipv6_cidr_blocks = []
@@ -142,44 +142,45 @@ resource "aws_security_group" "rds_sg" {
 resource "aws_db_instance" "rds" {
   # Engine Options
   engine                                = "mysql"
-  engine_version                        = var.rds_engine_version
+  engine_version                        = var.engine_version
 
   # Settings
-  identifier                            = var.rds_instance_name
-  username                              = var.rds_master_username
-  password                              = var.rds_master_password
+  identifier                            = var.instance_name
+  username                              = var.master_username
+  password                              = var.master_password
 
   # Database instance size
-  instance_class                        = var.rds_instance_class
+  instance_class                        = var.instance_class
 
   # Storage
-  storage_type                          = var.rds_storage_type
-  iops                                  = var.rds_iops
-  allocated_storage                     = var.rds_initial_allocated_storage
-  max_allocated_storage                 = var.rds_max_allocated_storage
+  storage_type                          = var.storage_type
+  iops                                  = var.iops
+  allocated_storage                     = var.initial_allocated_storage
+  max_allocated_storage                 = var.max_allocated_storage
 
   # Availability & durability
-  multi_az                              = var.rds_multi_az
+  multi_az                              = var.multi_az
 
   # Connectivity
   vpc_security_group_ids                = [aws_security_group.rds_sg.id]
-  db_subnet_group_name                  = aws_db_subnet_group.db_subnet_group.id
-  publicly_accessible                   = var.rds_publicly_accessible
+  # db_subnet_group_name                  = aws_db_subnet_group.db_subnet_group.id
+  db_subnet_group_name                  = aws_db_subnet_group.db_subnet_group.name
+  publicly_accessible                   = var.publicly_accessible
   port                                  = 3306
 
   # Database authentication
-  iam_database_authentication_enabled   = var.rds_iam_auth
+  iam_database_authentication_enabled   = var.iam_database_authentication_enabled
 
   # Database options
-  name                                  = var.rds_database_name
-  parameter_group_name                  = var.rds_parameter_group_name
-  option_group_name                     = var.rds_option_group_name
+  name                                  = var.database_name
+  parameter_group_name                  = var.parameter_group_name
+  option_group_name                     = var.option_group_name
 
   # Backup
-  backup_window                         = var.rds_backup_window
-  backup_retention_period               = var.rds_backup_retention_period
-  copy_tags_to_snapshot                 = var.rds_copy_tags_to_snapshot
-  skip_final_snapshot                   = var.rds_skip_final_snapshot
+  backup_window                         = var.backup_window
+  backup_retention_period               = var.backup_retention_period
+  copy_tags_to_snapshot                 = var.copy_tags_to_snapshot
+  skip_final_snapshot                   = var.skip_final_snapshot
   
   # Encryption
   storage_encrypted                     = false
@@ -189,12 +190,12 @@ resource "aws_db_instance" "rds" {
   performance_insights_retention_period = 0
 
   # Monitoring
-  monitoring_interval                   = var.rds_monitoring_interval
-  enabled_cloudwatch_logs_exports       = var.rds_cloudwatch_logs_exports
+  monitoring_interval                   = var.monitoring_interval
+  enabled_cloudwatch_logs_exports       = var.cloudwatch_logs_exports
 
   # Maintenance
   auto_minor_version_upgrade            = false
-  maintenance_window                    = var.rds_maintenance_window
+  maintenance_window                    = var.maintenance_window
 
   # Deletion protection
   deletion_protection                   = false

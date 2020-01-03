@@ -1,0 +1,7 @@
+---
+# Share local project directory inside the Vagrant VM. src should be the root of project structure.
+# dest is the desired location within the VM.
+project:
+  src: ..
+  dest: /home/vagrant/terraform
+

@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+current_dir = File.dirname(File.expand_path(__FILE__))
+myconfig    = YAML.load_file("#{current_dir}/config.yaml")
+
+Vagrant.configure("2") do |config|
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  config.vm.box = "centos/7"
+
+  # Mount the configured project folder
+  config.vm.synced_folder myconfig['project']['src'], myconfig['project']['dest']
+
+  # Mount .ssh for convenience
+  config.vm.synced_folder "~/.ssh", "/home/vagrant/.ssh"
+
+  # Mount .aws so that the terraform scripts can get AWS credentials
+  config.vm.synced_folder "~/.aws", "/home/vagrant/.aws"
+
+  # Enable provisioning with a shell script.
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo yum -y -q update
+    sudo yum install -y -q wget unzip
+
+    sudo wget -q https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_amd64.zip
+    sudo unzip -q ./terraform_0.12.18_linux_amd64.zip -d /usr/local/bin
+    rm terraform_0.12.18_linux_amd64.zip
+
+    curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+    unzip awscli-bundle.zip
+    sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+    rm awscli-bundle.zip
+    rm -rf awscli-bundle
+
+    echo "Installed packages:"
+    /usr/local/bin/terraform --version
+    /usr/local/bin/aws --version
+  SHELL
+end
